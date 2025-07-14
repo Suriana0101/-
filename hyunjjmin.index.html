@@ -1,18 +1,15 @@
 <!DOCTYPE html>
-<html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
   <title>Hyunjin Popup Love + Музыка</title>
   <style>
-    <body>
     body {
       font-family: sans-serif;
       margin: 0;
       padding: 0;
       background-color: #f0f0f0;
     }
-
     .open-btn {
       margin: 100px auto;
       display: block;
@@ -25,11 +22,9 @@
       cursor: pointer;
       transition: transform 0.3s;
     }
-
     .open-btn:hover {
       transform: scale(1.05);
     }
-
     .popup-bg {
       display: none;
       position: fixed;
@@ -41,7 +36,9 @@
       animation: fadeIn 0.5s ease forwards;
       z-index: 10;
     }
-
+    .popup-bg.active {
+      display: flex;
+    }
     .popup {
       position: relative;
       background: white;
@@ -53,14 +50,12 @@
       text-align: center;
       animation: popupAppear 0.5s ease forwards;
     }
-
     .popup img {
       max-width: 100%;
       border-radius: 10px;
       z-index: 2;
       position: relative;
     }
-
     .close-btn {
       margin-top: 15px;
       padding: 10px 20px;
@@ -70,7 +65,6 @@
       border-radius: 8px;
       cursor: pointer;
     }
-
     @keyframes popupAppear {
       from {
         transform: scale(0.8);
@@ -81,12 +75,10 @@
         opacity: 1;
       }
     }
-
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
-
     .heart {
       position: absolute;
       width: 20px;
@@ -97,7 +89,6 @@
       pointer-events: none;
       opacity: 0.8;
     }
-
     @keyframes floatUp {
       0% {
         transform: translateY(0) scale(1);
@@ -114,7 +105,7 @@
 
   <button class="open-btn" onclick="openPopup()">Показать Хенджина 💫</button>
 
-  <div class="popup-bg" onclick="closePopup()" id="popupBg">
+  <div class="popup-bg" id="popupBg">
     <div class="popup" onclick="event.stopPropagation()">
       <h2>Наш сияющий Хенджин ✨</h2>
       <div style="position: relative;">
@@ -126,7 +117,46 @@
     </div>
   </div>
 
-    </script>
+  <script>
+    function openPopup() {
+      document.getElementById('popupBg').classList.add('active');
+      generateHearts();
+    }
 
+    function closePopup() {
+      document.getElementById('popupBg').classList.remove('active');
+      clearHearts();
+    }
+
+    // Optional: Animated hearts inside popup
+    function generateHearts() {
+      const heartsContainer = document.getElementById('hearts-container');
+      clearHearts();
+      for (let i = 0; i < 10; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = (Math.random() * 80) + '%';
+        heart.style.top = (Math.random() * 40) + '%';
+        heartsContainer.appendChild(heart);
+      }
+    }
+
+    function clearHearts() {
+      const heartsContainer = document.getElementById('hearts-container');
+      heartsContainer.innerHTML = '';
+    }
+
+    // Optional: Close popup when ESC is pressed
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "Escape") closePopup();
+    });
+
+    // Optional: Clicking outside the popup closes it
+    document.getElementById('popupBg').addEventListener('click', closePopup);
+    // Prevent popup itself from closing when clicked
+    document.querySelector('.popup').addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  </script>
 </body>
 </html>
